@@ -1,11 +1,11 @@
-package org.example.member.service;
+package org.example.crud.service;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.member.dto.MemberRequest;
-import org.example.member.dto.MemberResponse;
-import org.example.member.entity.Member;
-import org.example.member.repository.MemberRepository;
+import org.example.crud.dto.MemberRequest;
+import org.example.crud.dto.MemberResponse;
+import org.example.crud.entity.Member;
+import org.example.crud.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -42,6 +42,14 @@ public class MemberService {
         return dtos;
     }
 
+    @Transactional(readOnly = true)
+    public MemberResponse findMember(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new IllegalArgumentException("해당 멤버 ID는 존재하지 않습니다.")
+        );
+        return new MemberResponse(member.getId(), member.getName());
+    }
+
     @Transactional
     public MemberResponse updateMember(Long memberId, MemberRequest memberRequest) {
         // 해당하는 1명의 멤버를 찾기 위한 ID(Long 타입)와 수정 내용을 리퀘스트에 지정된 형태로 받아옴
@@ -54,7 +62,7 @@ public class MemberService {
                 member.getName()
         );
     }
-    
+
     @Transactional
     public void deleteMember(Long memberId) { // void : 아무런 값을 반환하지 않기 때문에 작성
         boolean b = memberRepository.existsById(memberId);
@@ -64,11 +72,4 @@ public class MemberService {
         memberRepository.deleteById(memberId);
     }
 
-    @Transactional
-    public MemberResponse findMember(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new IllegalArgumentException("해당 멤버 ID는 존재하지 않습니다.")
-        );
-        return new MemberResponse(member.getId(), member.getName());
-    }
 }

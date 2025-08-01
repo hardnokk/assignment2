@@ -1,4 +1,4 @@
-package org.example.member.dto;
+package org.example.crud.dto;
 
 import lombok.Getter;
 

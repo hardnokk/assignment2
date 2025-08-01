@@ -1,6 +1,6 @@
-package org.example.member.repository;
+package org.example.crud.repository;
 
-import org.example.member.entity.Member;
+import org.example.crud.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
